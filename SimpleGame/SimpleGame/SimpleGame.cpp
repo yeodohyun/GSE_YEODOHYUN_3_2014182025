@@ -10,12 +10,20 @@ but WITHOUT ANY WARRANTY.
 
 #include "stdafx.h"
 #include <iostream>
+#include <vector>
+
 #include "Dependencies\glew.h"
 #include "Dependencies\freeglut.h"
-
 #include "Renderer.h"
+#include "Object.h"
 
+using namespace std;
 Renderer *g_Renderer = NULL;
+
+
+Object object;
+std::vector<Object> Obj;
+
 
 void RenderScene(void)
 {
@@ -23,18 +31,34 @@ void RenderScene(void)
 	glClearColor(0.0f, 0.3f, 0.3f, 1.0f);
 
 	// Renderer Test
-	g_Renderer->DrawSolidRect(0, 0, 0, 4, 1, 0, 1, 1);
+	//g_Renderer->DrawSolidRect(0, 0, 0, 4, 1, 0, 1, 1);
 
+	g_Renderer->DrawSolidRect(object.x, object.y, object.z, object.size, object.r, object.g, object.b, object.a);
+
+	for (auto data : Obj) {
+		g_Renderer->DrawSolidRect(data.x, data.y, data.z, data.size, data.r, data.g, data.b, data.a);
+	}
 	glutSwapBuffers();
 }
 
 void Idle(void)
 {
+	object.Update();
+	for (auto i = Obj.begin(); i < Obj.end(); ++i) {
+		i->Update();
+	}
 	RenderScene();
 }
 
 void MouseInput(int button, int state, int x, int y)
 {
+	//state 0 = keydown, state 1= keyup
+	if (state == 1) {
+		Object ob(x-250,-(y-250));
+
+		Obj.push_back(ob);
+	}
+	std::cout <<"button"<<button<<"state : "<<state<< "x :" << x << "y: " << y << std::endl;
 	RenderScene();
 }
 
@@ -73,7 +97,6 @@ int main(int argc, char **argv)
 	{
 		std::cout << "Renderer could not be initialized.. \n";
 	}
-
 	glutDisplayFunc(RenderScene);
 	glutIdleFunc(Idle);
 	glutKeyboardFunc(KeyInput);
