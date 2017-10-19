@@ -16,26 +16,46 @@ but WITHOUT ANY WARRANTY.
 #include "Dependencies\freeglut.h"
 #include "Renderer.h"
 #include "Object.h"
-
+#include "SceneMgr.h"
 using namespace std;
 Renderer *g_Renderer = NULL;
 
 
-Object object;
+SceneMgr SMgr;
+//Object object;
 std::vector<Object> Obj;
 
+void CheckBox(Object ob1, Object ob2) {
+	if (ob1.x - (ob1.size / 2) < ob2.x + (ob2.size / 2) && ob1.x + (ob1.size / 2) > ob2.x - (ob2.size / 2) && ob1.y - (ob1.size / 2) < ob2.y + (ob2.size / 2) && ob1.y + (ob1.size / 2) > ob2.y - (ob2.size / 2)) {
+		ob1.g = 0;
+		ob1.b = 0;
+		ob2.g = 0;
+		ob2.b = 0;
+	}
+	else {
+		ob1.g = 255;
+		ob1.b = 255;
+		ob2.g = 255;
+		ob2.b = 255;
+	}
+}
 
 void RenderScene(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.0f, 0.3f, 0.3f, 1.0f);
 
-	// Renderer Test
-	//g_Renderer->DrawSolidRect(0, 0, 0, 4, 1, 0, 1, 1);
+	//// Renderer Test
+	////g_Renderer->DrawSolidRect(0, 0, 0, 4, 1, 0, 1, 1);
+	//object.SetVector(0.07, 0.12, 0);
 
-	g_Renderer->DrawSolidRect(object.x, object.y, object.z, object.size, object.r, object.g, object.b, object.a);
+	//g_Renderer->DrawSolidRect(object.x, object.y, object.z, object.size, object.r, object.g, object.b, object.a);
 
-	for (auto data : Obj) {
+	//for (auto data : Obj) {
+	//	g_Renderer->DrawSolidRect(data.x, data.y, data.z, data.size, data.r, data.g, data.b, data.a);
+	//}
+
+	for (auto data : SMgr.m_objects) {
 		g_Renderer->DrawSolidRect(data.x, data.y, data.z, data.size, data.r, data.g, data.b, data.a);
 	}
 	glutSwapBuffers();
@@ -43,9 +63,19 @@ void RenderScene(void)
 
 void Idle(void)
 {
-	object.Update();
-	for (auto i = Obj.begin(); i < Obj.end(); ++i) {
-		i->Update();
+	//object.Update();
+	
+	//for (auto i = Obj.begin(); i < Obj.end(); ++i) {
+	//	i->Update();
+	//}
+
+	//SMgr.Update();
+
+	for (int i = 0; i < MAX_OBJECTS_COUNT; i++) {
+
+		for (int j = 0; j < MAX_OBJECTS_COUNT; j++) {
+			CheckBox(SMgr.m_objects[i], SMgr.m_objects[j]);
+		}
 	}
 	RenderScene();
 }
@@ -55,8 +85,9 @@ void MouseInput(int button, int state, int x, int y)
 	//state 0 = keydown, state 1= keyup
 	if (state == 1) {
 		Object ob(x-250,-(y-250));
-
-		Obj.push_back(ob);
+		ob.SetVector(0.05, 0.02, 0);
+		SMgr.AddObject(ob);
+		//Obj.push_back(ob);
 	}
 	std::cout <<"button"<<button<<"state : "<<state<< "x :" << x << "y: " << y << std::endl;
 	RenderScene();
