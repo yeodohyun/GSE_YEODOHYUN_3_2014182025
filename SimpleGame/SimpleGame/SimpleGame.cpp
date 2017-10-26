@@ -11,6 +11,7 @@ but WITHOUT ANY WARRANTY.
 #include "stdafx.h"
 #include <iostream>
 #include <vector>
+#include <math.h>
 
 #include "Dependencies\glew.h"
 #include "Dependencies\freeglut.h"
@@ -25,20 +26,7 @@ SceneMgr SMgr;
 //Object object;
 std::vector<Object> Obj;
 
-void CheckBox(Object ob1, Object ob2) {
-	if (ob1.x - (ob1.size / 2) < ob2.x + (ob2.size / 2) && ob1.x + (ob1.size / 2) > ob2.x - (ob2.size / 2) && ob1.y - (ob1.size / 2) < ob2.y + (ob2.size / 2) && ob1.y + (ob1.size / 2) > ob2.y - (ob2.size / 2)) {
-		ob1.g = 0;
-		ob1.b = 0;
-		ob2.g = 0;
-		ob2.b = 0;
-	}
-	else {
-		ob1.g = 255;
-		ob1.b = 255;
-		ob2.g = 255;
-		ob2.b = 255;
-	}
-}
+
 
 void RenderScene(void)
 {
@@ -64,26 +52,22 @@ void RenderScene(void)
 void Idle(void)
 {
 	//object.Update();
-	
+
 	//for (auto i = Obj.begin(); i < Obj.end(); ++i) {
 	//	i->Update();
 	//}
 
-	//SMgr.Update();
+	SMgr.Update();
 
-	for (int i = 0; i < MAX_OBJECTS_COUNT; i++) {
 
-		for (int j = 0; j < MAX_OBJECTS_COUNT; j++) {
-			CheckBox(SMgr.m_objects[i], SMgr.m_objects[j]);
-		}
-	}
 	RenderScene();
 }
 
 void MouseInput(int button, int state, int x, int y)
 {
 	//state 0 = keydown, state 1= keyup
-	if (state == 1) {
+	if (state == 1) 
+	{
 		Object ob(x-250,-(y-250));
 		ob.SetVector(0.05, 0.02, 0);
 		SMgr.AddObject(ob);
