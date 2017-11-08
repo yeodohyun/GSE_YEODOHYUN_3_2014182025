@@ -9,71 +9,52 @@ but WITHOUT ANY WARRANTY.
 */
 
 #include "stdafx.h"
+#include "windows.h"
 #include <iostream>
-#include <vector>
-#include <math.h>
-
 #include "Dependencies\glew.h"
 #include "Dependencies\freeglut.h"
+
 #include "Renderer.h"
 #include "Object.h"
 #include "SceneMgr.h"
+
 using namespace std;
-Renderer *g_Renderer = NULL;
 
 
-SceneMgr SMgr;
-//Object object;
-std::vector<Object> Obj;
+SceneMgr *g_SceneMgr = NULL;
 
+Object* obj = new Object(0, 0);
 
+DWORD prevTime = 0;
 
 void RenderScene(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.0f, 0.3f, 0.3f, 1.0f);
 
-	//// Renderer Test
-	////g_Renderer->DrawSolidRect(0, 0, 0, 4, 1, 0, 1, 1);
-	//object.SetVector(0.07, 0.12, 0);
+	DWORD currTime = timeGetTime();
+	DWORD elapsedTime = currTime - prevTime;
+	prevTime = currTime;
 
-	//g_Renderer->DrawSolidRect(object.x, object.y, object.z, object.size, object.r, object.g, object.b, object.a);
+	// Renderer Test
+	g_SceneMgr->UpateSceneMgr((float)elapsedTime);
+	g_SceneMgr->DrawAllObjects();
 
-	//for (auto data : Obj) {
-	//	g_Renderer->DrawSolidRect(data.x, data.y, data.z, data.size, data.r, data.g, data.b, data.a);
-	//}
-
-	for (auto data : SMgr.m_objects) {
-		g_Renderer->DrawSolidRect(data.x, data.y, data.z, data.size, data.r, data.g, data.b, data.a);
-	}
 	glutSwapBuffers();
 }
 
 void Idle(void)
 {
-	//object.Update();
-
-	//for (auto i = Obj.begin(); i < Obj.end(); ++i) {
-	//	i->Update();
-	//}
-
-	SMgr.Update();
-
-
 	RenderScene();
 }
 
 void MouseInput(int button, int state, int x, int y)
 {
-	//state 0 = keydown, state 1= keyup
-	if (state == 1) 
+	if (state == GLUT_UP)
 	{
-		Object ob(x-250,-(y-250));
-		ob.SetVector(0.05, 0.02, 0);
-		SMgr.AddObject(ob);
-		//Obj.push_back(ob);
+		g_SceneMgr->AddObject(x - 250, -(y - 250) );
 	}
-	std::cout <<"button"<<button<<"state : "<<state<< "x :" << x << "y: " << y << std::endl;
+	std::cout << "button" << button << "state : " << state << "x :" << x << "y: " << y << std::endl;
 	RenderScene();
 }
 
@@ -96,6 +77,7 @@ int main(int argc, char **argv)
 	glutInitWindowSize(500, 500);
 	glutCreateWindow("Game Software Engineering KPU");
 
+	
 	glewInit();
 	if (glewIsSupported("GL_VERSION_3_0"))
 	{
@@ -107,20 +89,20 @@ int main(int argc, char **argv)
 	}
 
 	// Initialize Renderer
-	g_Renderer = new Renderer(500, 500);
-	if (!g_Renderer->IsInitialized())
-	{
-		std::cout << "Renderer could not be initialized.. \n";
-	}
+
 	glutDisplayFunc(RenderScene);
 	glutIdleFunc(Idle);
 	glutKeyboardFunc(KeyInput);
 	glutMouseFunc(MouseInput);
 	glutSpecialFunc(SpecialKeyInput);
 
+	g_SceneMgr = new SceneMgr(500, 500);
+
+	prevTime = timeGetTime();
+
 	glutMainLoop();
 
-	delete g_Renderer;
+	delete g_SceneMgr;
 
     return 0;
 }

@@ -1,15 +1,29 @@
+
 #include "stdafx.h"
 #include "Object.h"
 #include "Renderer.h"
-#include <iostream>
 
-Object::Object() : x(-500), y(-500), z(0), size(30), r(255), g(0), b(0), a(0)
+
+Object::Object()
 {
-
 }
-Object::Object(int x1,int y1) : x(x1), y(y1), z(0), size(20), a(0)
-{
 
+Object::Object(float x, float y)
+{
+	posX = x;
+	posY = y;
+
+	vX = 200.f *(((float)std::rand() / (float)RAND_MAX) - 1.5f);
+	vY = 200.f *(((float)std::rand() / (float)RAND_MAX) - 1.5f);
+	
+	size = 20;
+	color[0] = 1;
+	color[1] = 1;
+	color[2] = 1;
+	color[3] = 1;
+	
+	Life = 5;
+	Lifetimer = 500.0f;
 }
 
 
@@ -17,39 +31,41 @@ Object::~Object()
 {
 }
 
-void Object::SetVector(float x, float y, float z)
+void Object::Update(float elapsedTime)
 {
-	vx = x;
-	vy = y;
-	vz = z;
+	float elapsedTimeInSecond = elapsedTime / 1000.f;
+
+	Lifetimer -= 0.01f;
+
+	posX = posX + vX * elapsedTimeInSecond;
+	posY = posY + vY * elapsedTimeInSecond;
+
+	if (posX > 250)
+	{
+		posX = 250;
+		vX = -vX;
+	}
+
+	if (posX < -250)
+	{
+		posX = -250;
+		vX = -vX;
+	}
+
+	if (posY > 250)
+	{
+		posY = 250;
+		vY = -vY;
+	}
+
+	if (posY < -250)
+	{
+		posY = -250;
+		vY = -vY;
+	}
 }
 
-void Object::Update()
+float Object::GetTime()
 {
-	if (Xs == 0) 
-	{
-		x -= vx;
-		if (x < -250)
-			Xs = 1;
-	}
-	else if (Xs == 1) 
-	{
-		x += vx;
-		if (x > 250)
-			Xs = 0;
-	}
-
-	if (Ys == 0) 
-	{
-		y -= vy;
-		if (y < -250)
-			Ys = 1;
-	}
-	else if (Ys == 1) 
-	{
-		y += vy;
-		if (y > 250)
-			Ys = 0;
-	}
-
+	return Lifetimer;
 }

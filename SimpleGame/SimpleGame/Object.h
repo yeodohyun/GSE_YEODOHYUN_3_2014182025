@@ -1,17 +1,22 @@
 #pragma once
-#include <random>
+
+
 class Object
 {
-private:
 public:
-	float x, y, z, r=255, g=255, b=255, size, a;
-	float vx, vy, vz;
-	int Xs = rand()%2, Ys = rand()%2;
-	Object();
-	Object(int x,int y);
-	~Object();
 
-	void Update();
-	void SetVector(float vx, float vy, float vz);
+	float posX, posY;
+	float vX, vY;
+	int size, color[4];
+
+	int Life;
+	float Lifetimer;
+
+
+	Object();
+	Object(float x, float y);
+	~Object();
+	void Update(float elapsedTime);
+	float GetTime();
 };
 
