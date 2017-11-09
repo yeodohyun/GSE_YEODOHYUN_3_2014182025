@@ -23,7 +23,6 @@ using namespace std;
 
 SceneMgr *g_SceneMgr = NULL;
 
-Object* obj = new Object(0, 0);
 
 DWORD prevTime = 0;
 

@@ -2,7 +2,7 @@
 #include "Renderer.h"
 #include "Object.h"
 
-#define MAX_OBJECTS_COUNT 10
+#define MAX_OBJECTS_COUNT 11
 
 class SceneMgr
 {

@@ -1,5 +1,11 @@
 #pragma once
 
+enum {
+	OBJECT_CHARACTER = 1,
+	OBJECT_BUILDING = 2,
+	OBJECT_BULLET = 3,
+	OBJECT_ARROW = 4
+};
 
 class Object
 {
@@ -12,9 +18,10 @@ public:
 	int Life;
 	float Lifetimer;
 
+	int ObjectType;
 
 	Object();
-	Object(float x, float y);
+	Object(float x, float y, int Type);
 	~Object();
 	void Update(float elapsedTime);
 	float GetTime();
