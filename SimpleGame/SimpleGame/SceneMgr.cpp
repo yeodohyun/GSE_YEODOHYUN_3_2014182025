@@ -12,9 +12,10 @@ SceneMgr::SceneMgr(int width, int height)
 	for (int i = 0; i < MAX_OBJECTS_COUNT; i++)
 	{
 		m_Objects[i] = NULL;
+		m_Bullets[i] = NULL;
 	}
 		m_Objects[MAX_OBJECTS_COUNT - 1] = new Object(0, 0, OBJECT_BUILDING);
-		std::cout <<std::endl<< m_Objects[MAX_OBJECTS_COUNT - 1]->Life << std::endl;
+		
 
 }
 
@@ -30,7 +31,7 @@ void SceneMgr::DrawAllObjects()
 		if (m_Objects[i] != NULL)
 		{
 			m_renderer->DrawSolidRect(
-				m_Objects[i]->posX, m_Objects[i]->posY ,0,m_Objects[i]->size, 
+				m_Objects[i]->posX, m_Objects[i]->posY, 0, m_Objects[i]->size,
 				m_Objects[i]->color[0], m_Objects[i]->color[1], m_Objects[i]->color[2], m_Objects[i]->color[3]);
 		}
 	}
@@ -48,11 +49,12 @@ void SceneMgr::UpateSceneMgr(float elapsedTime)
 			{
 				m_Objects[i] = NULL;
 				delete m_Objects[i];
+				continue;
 			}
 			else
 				m_Objects[i]->Update(elapsedTime);
 
-			if (m_Objects[i]->Life == 0)
+			if (m_Objects[i]->Life <= 0)
 			{
 				m_Objects[i] = NULL;
 				delete m_Objects[i];
@@ -94,6 +96,13 @@ void SceneMgr::ColisionTest()
 				m_Objects[i]->color[2] = 0;
 				m_Objects[i]->color[3] = 1;
 			}
+			else if (m_Objects[i]->ObjectType == OBJECT_BULLET)
+			{
+				m_Objects[i]->color[0] = 1;
+				m_Objects[i]->color[1] = 0;
+				m_Objects[i]->color[2] = 0;
+				m_Objects[i]->color[3] = 1;
+			}
 
 		}
 		for (int j = 0; j < MAX_OBJECTS_COUNT; j++)
@@ -119,14 +128,14 @@ void SceneMgr::ColisionTest()
 
 				if (min_iX<max_jX && max_iX>min_jX && min_iY<max_jY&&max_iY>min_jY)
 				{
-					if (m_Objects[i]->ObjectType == OBJECT_BUILDING)
+					if (m_Objects[i]->ObjectType == OBJECT_BUILDING &&m_Objects[j]->ObjectType == OBJECT_CHARACTER)
 					{
 						m_Objects[i]->Life -= m_Objects[j]->Life;
+						std::cout << m_Objects[i]->Life << std::endl;
 						m_Objects[i]->color[0] = 1;
 						m_Objects[i]->color[1] = 0;
 						m_Objects[i]->color[2] = 0;
 						m_Objects[i]->color[3] = 1;
-						std::cout << m_Objects[i]->Life << std::endl;
 						m_Objects[j] = NULL;
 						delete m_Objects[j];
 					}

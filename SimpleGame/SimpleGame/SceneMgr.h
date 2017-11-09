@@ -8,6 +8,7 @@ class SceneMgr
 {
 private:
 	Object* m_Objects[MAX_OBJECTS_COUNT];
+	Object* m_Bullets[MAX_OBJECTS_COUNT];
 
 	Renderer *m_renderer;
 

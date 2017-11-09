@@ -14,23 +14,11 @@ Object::Object(float x, float y, int Type)
 	posY = y;
 	ObjectType = Type;
 
-	vX = 200.f *(((float)std::rand() / (float)RAND_MAX) - 1.5f);
-	vY = 200.f *(((float)std::rand() / (float)RAND_MAX) - 1.5f);
 
-	if(ObjectType == OBJECT_BUILDING)
-	{
-
-		size = 100;
-		color[0] = 1;
-		color[1] = 1;
-		color[2] = 0;
-		color[3] = 1;
-
-		Life = 50;
-		Lifetimer = 500.0f;
-	}
 	if (ObjectType == OBJECT_CHARACTER)
 	{
+		vX = 200.f *(((float)std::rand() / (float)RAND_MAX) - 1.5f);
+		vY = 200.f *(((float)std::rand() / (float)RAND_MAX) - 1.5f);
 
 		size = 20;
 		color[0] = 1;
@@ -39,6 +27,32 @@ Object::Object(float x, float y, int Type)
 		color[3] = 1;
 
 		Life = 10;
+		Lifetimer = 500.0f;
+	}
+	if (ObjectType == OBJECT_BUILDING)
+	{
+
+		size = 100;
+		color[0] = 1;
+		color[1] = 1;
+		color[2] = 0;
+		color[3] = 1;
+
+		Life = 500;
+		Lifetimer = 500.0f;
+	}
+	if (ObjectType == OBJECT_BULLET)
+	{
+		vX = 200.f *(((float)std::rand() / (float)RAND_MAX) - 1.5f);
+		vY = 200.f *(((float)std::rand() / (float)RAND_MAX) - 1.5f);
+
+		size = 10;
+		color[0] = 1;
+		color[1] = 0;
+		color[2] = 0;
+		color[3] = 1;
+
+		Life = 20;
 		Lifetimer = 500.0f;
 	}
 }
@@ -51,11 +65,11 @@ Object::~Object()
 void Object::Update(float elapsedTime)
 {
 	float elapsedTimeInSecond = elapsedTime / 1000.f;
-	std::cout << elapsedTime << std::endl;
+
 	if (ObjectType == OBJECT_CHARACTER)
 	{
-		Lifetimer -= 0.01f;
-
+		Lifetimer -= 0.05f;
+		//std::cout << Lifetimer << std::endl;
 		posX = posX + vX * elapsedTimeInSecond;
 		posY = posY + vY * elapsedTimeInSecond;
 
