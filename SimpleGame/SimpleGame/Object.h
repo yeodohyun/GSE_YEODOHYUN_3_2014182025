@@ -20,6 +20,8 @@ public:
 
 	int ObjectType;
 
+	float BulletTimer;
+
 	Object();
 	Object(float x, float y, int Type);
 	~Object();

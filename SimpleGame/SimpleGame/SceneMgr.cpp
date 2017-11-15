@@ -12,10 +12,9 @@ SceneMgr::SceneMgr(int width, int height)
 	for (int i = 0; i < MAX_OBJECTS_COUNT; i++)
 	{
 		m_Objects[i] = NULL;
-		m_Bullets[i] = NULL;
 	}
 		m_Objects[MAX_OBJECTS_COUNT - 1] = new Object(0, 0, OBJECT_BUILDING);
-		
+		AddObject(m_Objects[MAX_OBJECTS_COUNT - 1]->posX, m_Objects[MAX_OBJECTS_COUNT - 1]->posY, OBJECT_BULLET);
 
 }
 
@@ -39,8 +38,12 @@ void SceneMgr::DrawAllObjects()
 
 void SceneMgr::UpateSceneMgr(float elapsedTime)
 {
-	ColisionTest();
 
+	if (m_Objects[MAX_OBJECTS_COUNT - 1]->BulletTimer > 0.5f)
+	{
+		AddObject(m_Objects[MAX_OBJECTS_COUNT - 1]->posX, m_Objects[MAX_OBJECTS_COUNT - 1]->posY, OBJECT_BULLET);
+		m_Objects[MAX_OBJECTS_COUNT - 1]->BulletTimer = 0;
+	}
 	for (int i = 0; i < MAX_OBJECTS_COUNT; i++)
 	{
 		if (m_Objects[i] != NULL)
@@ -61,15 +64,21 @@ void SceneMgr::UpateSceneMgr(float elapsedTime)
 			}
 		}
 	}
+	ColisionTest();
 }
 
-void SceneMgr::AddObject(float x, float y)
+void SceneMgr::AddObject(float x, float y, int type)
 {
 	for (int i = 0; i < MAX_OBJECTS_COUNT; i++)
 	{
-		if (m_Objects[i] == NULL)
+		if (type == OBJECT_CHARACTER && m_Objects[i] == NULL)
 		{
-			m_Objects[i] = new Object(x, y, OBJECT_CHARACTER);
+			m_Objects[i] = new Object(x, y, type);
+			break;
+		}
+		if (type == OBJECT_BULLET && m_Objects[i] == NULL)
+		{
+			m_Objects[i] = new Object(x, y, type);
 			break;
 		}
 	}
@@ -129,6 +138,17 @@ void SceneMgr::ColisionTest()
 				if (min_iX<max_jX && max_iX>min_jX && min_iY<max_jY&&max_iY>min_jY)
 				{
 					if (m_Objects[i]->ObjectType == OBJECT_BUILDING &&m_Objects[j]->ObjectType == OBJECT_CHARACTER)
+					{
+						m_Objects[i]->Life -= m_Objects[j]->Life;
+						std::cout << m_Objects[i]->Life << std::endl;
+						m_Objects[i]->color[0] = 1;
+						m_Objects[i]->color[1] = 0;
+						m_Objects[i]->color[2] = 0;
+						m_Objects[i]->color[3] = 1;
+						m_Objects[j] = NULL;
+						delete m_Objects[j];
+					}
+					if (m_Objects[i]->ObjectType == OBJECT_CHARACTER &&m_Objects[j]->ObjectType == OBJECT_BULLET)
 					{
 						m_Objects[i]->Life -= m_Objects[j]->Life;
 						std::cout << m_Objects[i]->Life << std::endl;

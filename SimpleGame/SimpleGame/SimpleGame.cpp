@@ -51,9 +51,10 @@ void MouseInput(int button, int state, int x, int y)
 {
 	if (state == GLUT_UP)
 	{
-		g_SceneMgr->AddObject(x - 250, -(y - 250) );
+		g_SceneMgr->AddObject(x - 250, -(y - 250),OBJECT_CHARACTER);
 	}
-	std::cout << "button" << button << "state : " << state << "x :" << x << "y: " << y << std::endl;
+
+	//std::cout << "button" << button << "state : " << state << "x :" << x << "y: " << y << std::endl;
 	RenderScene();
 }
 
