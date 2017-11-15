@@ -22,7 +22,7 @@ void Renderer::Initialize(int windowSizeX, int windowSizeY)
 	m_SolidRectShader = CompileShaders("./Shaders/SolidRect.vs", "./Shaders/SolidRect.fs");
 	m_SolidRectWithTextureShader = CompileShaders("./Shaders/SolidRectWithTexture.vs", "./Shaders/SolidRectWithTexture.fs");
 	m_SolidRectWithTextureSeqShader = CompileShaders("./Shaders/SolidRectWithTextureSeq.vs", "./Shaders/SolidRectWithTextureSeq.fs");
-	
+
 	//Create VBOs
 	CreateVertexBufferObjects();
 
@@ -67,12 +67,12 @@ void Renderer::CreateVertexBufferObjects()
 	float rect[]
 		=
 	{
-		-1.f / m_WindowSizeX, -1.f / m_WindowSizeY, 0.f, 
+		-1.f / m_WindowSizeX, -1.f / m_WindowSizeY, 0.f,
 		-1.f / m_WindowSizeX, 1.f / m_WindowSizeY, 0.f,
-		 1.f / m_WindowSizeX, 1.f / m_WindowSizeY, 0.f, //Triangle1
-		-1.f / m_WindowSizeX, -1.f / m_WindowSizeY, 0.f, 
-		 1.f / m_WindowSizeX, 1.f / m_WindowSizeY, 0.f,
-		 1.f / m_WindowSizeX, -1.f / m_WindowSizeY, 0.f, //Triangle2
+		1.f / m_WindowSizeX, 1.f / m_WindowSizeY, 0.f, //Triangle1
+		-1.f / m_WindowSizeX, -1.f / m_WindowSizeY, 0.f,
+		1.f / m_WindowSizeX, 1.f / m_WindowSizeY, 0.f,
+		1.f / m_WindowSizeX, -1.f / m_WindowSizeY, 0.f, //Triangle2
 	};
 
 	glGenBuffers(1, &m_VBORect);
@@ -84,10 +84,10 @@ void Renderer::CreateVertexBufferObjects()
 	{
 		-1.f / m_WindowSizeX, -1.f / m_WindowSizeY, 0.f, 0.f, 0.f,
 		-1.f / m_WindowSizeX, 1.f / m_WindowSizeY, 0.f, 0.f, 1.f,
-		 1.f / m_WindowSizeX, 1.f / m_WindowSizeY, 0.f, 1.f, 1.f,        //Triangle1
+		1.f / m_WindowSizeX, 1.f / m_WindowSizeY, 0.f, 1.f, 1.f,        //Triangle1
 		-1.f / m_WindowSizeX, -1.f / m_WindowSizeY, 0.f, 0.f, 0.f,
-		 1.f / m_WindowSizeX, 1.f / m_WindowSizeY, 0.f, 1.f, 1.f,
-		 1.f / m_WindowSizeX, -1.f / m_WindowSizeY, 0.f, 1.f, 0.f,        //Triangle2
+		1.f / m_WindowSizeX, 1.f / m_WindowSizeY, 0.f, 1.f, 1.f,
+		1.f / m_WindowSizeX, -1.f / m_WindowSizeY, 0.f, 1.f, 0.f,        //Triangle2
 	};
 
 	glGenBuffers(1, &m_VBORectTex);
@@ -322,7 +322,7 @@ void Renderer::GetGLPosition(float x, float y, float *newX, float *newY)
 	*newY = y * 2.f / m_WindowSizeY;
 }
 
-unsigned char * Renderer::loadBMPRaw(const char * imagepath, unsigned int& outWidth, unsigned int& outHeight, bool flipY) 
+unsigned char * Renderer::loadBMPRaw(const char * imagepath, unsigned int& outWidth, unsigned int& outHeight, bool flipY)
 {
 	printf("Reading image %s\n", imagepath);
 	outWidth = -1;

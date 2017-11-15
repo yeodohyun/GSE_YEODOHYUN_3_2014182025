@@ -2,7 +2,7 @@
 #include "Renderer.h"
 #include "Object.h"
 
-#define MAX_OBJECTS_COUNT 51
+#define MAX_OBJECTS_COUNT 100
 
 class SceneMgr
 {
@@ -21,6 +21,7 @@ public:
 	void DrawAllObjects();
 	void UpateSceneMgr(float elapsedTime);
 	void AddObject(float x, float y, int type);
+	void AddObject(float x, float y, int type, int index);
 	void ColisionTest();
 };
 
