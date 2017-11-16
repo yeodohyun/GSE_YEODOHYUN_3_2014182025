@@ -21,6 +21,11 @@ public:
 	void DrawAllObjects();
 	void UpateSceneMgr(float elapsedTime);
 	void AddObject(float x, float y, int type);
+<<<<<<< HEAD
+=======
+	void AddObject(float x, float y, int type, int index);
+	void AddObject(float x, float y, int type, int index, int team);
+>>>>>>> parent of 4ebcafe... Lecture 7
 	void ColisionTest();
 };
 

@@ -22,8 +22,19 @@ public:
 
 	float BulletTimer;
 
+<<<<<<< HEAD
 	Object();
 	Object(float x, float y, int Type);
+=======
+	float ArrowTimer;
+	int ShooterIndex;
+
+	int Team;
+
+	Object();
+	Object(float x, float y, int Type);
+	Object(float x, float y, int Type, int index);
+>>>>>>> parent of 4ebcafe... Lecture 7
 	~Object();
 	void Update(float elapsedTime);
 	float GetTime();
