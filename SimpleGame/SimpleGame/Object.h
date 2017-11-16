@@ -25,11 +25,11 @@ public:
 	float ArrowTimer;
 	int ShooterIndex;
 
-	unsigned int m_texCharacter;
+	int Team;
 
 	Object();
 	Object(float x, float y, int Type);
-	Object(float x, float y, int Type, int index, int life);
+	Object(float x, float y, int Type, int index, int team);
 	~Object();
 	void Update(float elapsedTime);
 	float GetTime();

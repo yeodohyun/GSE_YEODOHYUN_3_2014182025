@@ -47,11 +47,11 @@ Object::Object(float x, float y, int Type)
 	else if (ObjectType == OBJECT_BULLET)
 	{
 		vX = 600.f *(((float)std::rand() / (float)RAND_MAX) - 1.5f);
-		vY = 600.f *(((float)std::rand() / (float)RAND_MAX) - 1.5f);
+		vY = abs(600.f *(((float)std::rand() / (float)RAND_MAX) - 1.5f)) ;
 		
 		if (std::rand() % 2 == 1)
 			vX = -vX;
-		if (std::rand() % 2 == 1)
+		if (vY < 0)
 			vY = -vY;
 
 		size = 7;
@@ -68,13 +68,63 @@ Object::Object(float x, float y, int Type)
 }
 
 //Arrow ¸¸µé±â
-Object::Object(float x, float y, int Type, int index, int life)
+Object::Object(float x, float y, int Type, int index, int team)
 {
 	posX = x;
 	posY = y;
 	ObjectType = Type;
+	Team = team;
 
-	if (ObjectType == OBJECT_ARROW)
+	if (ObjectType == OBJECT_CHARACTER)
+	{
+		vX = 200.f *(((float)std::rand() / (float)RAND_MAX) - 1.5f);
+		vY = 200.f *(((float)std::rand() / (float)RAND_MAX) - 1.5f);
+
+		size = 15;
+		if (Team == 1)
+		{
+			color[0] = 1;
+			color[1] = 0;
+			color[2] = 0;
+			color[3] = 1;
+		}
+		ShooterIndex = -1;
+		ArrowTimer = 0;
+		Life = 10;
+		Lifetimer = 1000.0f;
+	}
+	else if (ObjectType == OBJECT_BUILDING)
+	{
+
+		size = 80;
+		color[0] = 1;
+		color[1] = 1;
+		color[2] = 0;
+		color[3] = 1;
+
+		Life = 500;
+		Lifetimer = 500.0f;
+
+		BulletTimer = 0.0f;
+	}
+	else if (ObjectType == OBJECT_BULLET)
+	{
+		vX = 600.f *(((float)std::rand() / (float)RAND_MAX) - 0.5f);
+		vY = abs(600.f *(((float)std::rand() / (float)RAND_MAX) - 1.5f)) * -1;
+
+
+		size = 7;
+		color[0] = 1;
+		color[1] = 0;
+		color[2] = 0;
+		color[3] = 1;
+
+		Life = 20;
+		Lifetimer = 500.0f;
+
+		BulletTimer = 0.0f;
+	}
+	else if (ObjectType == OBJECT_ARROW)
 	{
 		vX = 200.f *(((float)std::rand() / (float)RAND_MAX) - 1.5f);
 		vY = 200.f *(((float)std::rand() / (float)RAND_MAX) - 1.5f);
@@ -89,7 +139,6 @@ Object::Object(float x, float y, int Type, int index, int life)
 		color[2] = 0;
 		color[3] = 1;
 
-		Life = life;
 		Lifetimer = 500.0f;
 		ShooterIndex = index;
 	}
@@ -140,9 +189,9 @@ void Object::Update(float elapsedTime)
 			vX = -vX;
 		}
 
-		if (posY > 250)
+		if (posY > 400)
 		{
-			posY = 250;
+			posY = 400;
 
 			if (ObjectType == OBJECT_BULLET || ObjectType == OBJECT_ARROW)
 			{
@@ -152,9 +201,9 @@ void Object::Update(float elapsedTime)
 			vY = -vY;
 		}
 
-		if (posY < -250)
+		if (posY < -400)
 		{
-			posY = -250;
+			posY = -400;
 
 			if (ObjectType == OBJECT_BULLET || ObjectType == OBJECT_ARROW)
 			{
