@@ -34,6 +34,9 @@ public:
 	Object();
 	Object(float x, float y, int Type);
 	Object(float x, float y, int Type, int index);
+<<<<<<< HEAD
+>>>>>>> parent of 4ebcafe... Lecture 7
+=======
 >>>>>>> parent of 4ebcafe... Lecture 7
 	~Object();
 	void Update(float elapsedTime);

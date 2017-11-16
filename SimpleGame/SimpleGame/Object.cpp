@@ -89,7 +89,10 @@ Object::Object(float x, float y, int Type, int index)
 		color[3] = 1;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 		Life = 10;
+=======
+>>>>>>> parent of 4ebcafe... Lecture 7
 =======
 >>>>>>> parent of 4ebcafe... Lecture 7
 		Lifetimer = 500.0f;

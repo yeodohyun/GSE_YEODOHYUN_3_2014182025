@@ -25,6 +25,9 @@ public:
 =======
 	void AddObject(float x, float y, int type, int index);
 	void AddObject(float x, float y, int type, int index, int team);
+<<<<<<< HEAD
+>>>>>>> parent of 4ebcafe... Lecture 7
+=======
 >>>>>>> parent of 4ebcafe... Lecture 7
 	void ColisionTest();
 };
