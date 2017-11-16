@@ -84,7 +84,7 @@ void SceneMgr::UpateSceneMgr(float elapsedTime)
 	ColisionTest();
 }
 
-void SceneMgr::AddObject(float x, float y, int type, int team)
+void SceneMgr::AddObject(float x, float y, int type)
 {
 	for (int i = 0; i < MAX_OBJECTS_COUNT; i++)
 	{
@@ -102,24 +102,13 @@ void SceneMgr::AddObject(float x, float y, int type, int team)
 
 }
 
-void SceneMgr::AddObject(float x, float y, int type, int index, int team)
+void SceneMgr::AddObject(float x, float y, int type, int index)
 {
 	for (int i = 0; i < MAX_OBJECTS_COUNT; i++)
 	{
-		if (type == OBJECT_CHARACTER && m_Objects[i] == NULL)
-		{
-			m_Objects[i] = new Object(x, y, type);
-			break;
-		}
-		if (type == OBJECT_BULLET && m_Objects[i] == NULL)
-		{
-			m_Objects[i] = new Object(x, y, type);
-			break;
-		}
 		if (type == OBJECT_ARROW && m_Objects[i] == NULL)
 		{
-			m_Objects[i] = new Object(x, y, type, index);
-			m_Objects[i]->Life = m_Objects[index]->Life;
+			m_Objects[i] = new Object(x, y, type, index, m_Objects[index]->Life);
 			break;
 		}
 	}

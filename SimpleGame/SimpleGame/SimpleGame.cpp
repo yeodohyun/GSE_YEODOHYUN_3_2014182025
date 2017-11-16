@@ -51,7 +51,7 @@ void MouseInput(int button, int state, int x, int y)
 {
 	if (state == GLUT_UP)
 	{
-		g_SceneMgr->AddObject(x - 250, -(y - 400),OBJECT_CHARACTER,1);
+		g_SceneMgr->AddObject(x - 250, -(y - 250),OBJECT_CHARACTER);
 	}
 
 	//std::cout << "button" << button << "state : " << state << "x :" << x << "y: " << y << std::endl;
@@ -74,7 +74,7 @@ int main(int argc, char **argv)
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowPosition(0, 0);
-	glutInitWindowSize(500, 800);
+	glutInitWindowSize(500, 500);
 	glutCreateWindow("Game Software Engineering KPU");
 
 	
@@ -96,7 +96,7 @@ int main(int argc, char **argv)
 	glutMouseFunc(MouseInput);
 	glutSpecialFunc(SpecialKeyInput);
 
-	g_SceneMgr = new SceneMgr(500, 800);
+	g_SceneMgr = new SceneMgr(500, 500);
 
 	prevTime = timeGetTime();
 
