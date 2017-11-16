@@ -22,6 +22,7 @@ public:
 	void UpateSceneMgr(float elapsedTime);
 	void AddObject(float x, float y, int type);
 	void AddObject(float x, float y, int type, int index);
+	void AddObject(float x, float y, int type, int index, int team);
 	void ColisionTest();
 };
 

@@ -13,7 +13,7 @@ Object::Object(float x, float y, int Type)
 	posY = y;
 	ObjectType = Type;
 
-
+	ShooterIndex = -1;
 	if (ObjectType == OBJECT_CHARACTER)
 	{
 		vX = 200.f *(((float)std::rand() / (float)RAND_MAX) - 1.5f);
@@ -68,7 +68,7 @@ Object::Object(float x, float y, int Type)
 }
 
 //Arrow ¸¸µé±â
-Object::Object(float x, float y, int Type, int index, int life)
+Object::Object(float x, float y, int Type, int index)
 {
 	posX = x;
 	posY = y;
@@ -89,7 +89,6 @@ Object::Object(float x, float y, int Type, int index, int life)
 		color[2] = 0;
 		color[3] = 1;
 
-		Life = life;
 		Lifetimer = 500.0f;
 		ShooterIndex = index;
 	}
@@ -140,9 +139,9 @@ void Object::Update(float elapsedTime)
 			vX = -vX;
 		}
 
-		if (posY > 250)
+		if (posY > 400)
 		{
-			posY = 250;
+			posY = 400;
 
 			if (ObjectType == OBJECT_BULLET || ObjectType == OBJECT_ARROW)
 			{
@@ -152,9 +151,9 @@ void Object::Update(float elapsedTime)
 			vY = -vY;
 		}
 
-		if (posY < -250)
+		if (posY < -400)
 		{
-			posY = -250;
+			posY = -400;
 
 			if (ObjectType == OBJECT_BULLET || ObjectType == OBJECT_ARROW)
 			{
