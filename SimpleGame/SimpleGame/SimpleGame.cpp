@@ -26,8 +26,6 @@ SceneMgr *g_SceneMgr = NULL;
 
 DWORD prevTime = 0;
 
-float PlayerTimer = 0;
-bool InputLButton = false;
 void RenderScene(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -41,12 +39,6 @@ void RenderScene(void)
 	g_SceneMgr->UpateSceneMgr((float)elapsedTime);
 	g_SceneMgr->DrawAllObjects();
 
-	if (InputLButton)
-	{
-		PlayerTimer += (float)elapsedTime / 1000.f;
-		if (PlayerTimer > 7.0f)
-			InputLButton = false;
-	}
 	glutSwapBuffers();
 }
 
@@ -59,12 +51,7 @@ void MouseInput(int button, int state, int x, int y)
 {
 	if (state == GLUT_UP)
 	{
-		if (-(y - 400) < 0 && InputLButton == false)
-		{
-			g_SceneMgr->AddObject(x - 250, -(y - 400), OBJECT_CHARACTER, 0, 2);
-			PlayerTimer = 0.0f;
-			InputLButton = true;
-		}
+		g_SceneMgr->AddObject(x - 250, -(y - 400), OBJECT_CHARACTER, 0, 1);
 	}
 
 	//std::cout << "button" << button << "state : " << state << "x :" << x << "y: " << y << std::endl;

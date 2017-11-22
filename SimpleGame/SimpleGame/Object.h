@@ -21,7 +21,6 @@ public:
 	int ObjectType;
 
 	float BulletTimer;
-	float PlayerTimer;
 
 	float ArrowTimer;
 	int ShooterIndex;
