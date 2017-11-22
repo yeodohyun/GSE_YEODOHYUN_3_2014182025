@@ -77,8 +77,8 @@ Object::Object(float x, float y, int Type, int index, int team)
 
 	if (ObjectType == OBJECT_CHARACTER)
 	{
-		vX = 200.f *(((float)std::rand() / (float)RAND_MAX) - 1.5f);
-		vY = 200.f *(((float)std::rand() / (float)RAND_MAX) - 1.5f);
+		vX = 300.f *(((float)std::rand() / (float)RAND_MAX) - 1.5f);
+		vY = 300.f *(((float)std::rand() / (float)RAND_MAX) - 1.5f);
 
 		size = 15;
 		if (Team == 1)
@@ -106,12 +106,20 @@ Object::Object(float x, float y, int Type, int index, int team)
 		Lifetimer = 500.0f;
 
 		BulletTimer = 0.0f;
+		PlayerTimer = 0.0f;
 	}
 	else if (ObjectType == OBJECT_BULLET)
 	{
-		vX = 600.f *(((float)std::rand() / (float)RAND_MAX) - 0.5f);
-		vY = abs(600.f *(((float)std::rand() / (float)RAND_MAX) - 1.5f)) * -1;
-
+		if (Team == 1)
+		{
+			vX = 600.f *(((float)std::rand() / (float)RAND_MAX) - 0.5f);
+			vY = abs(600.f *(((float)std::rand() / (float)RAND_MAX) - 1.5f)) * -1;
+		}
+		if (Team == 2)
+			{
+				vX = 600.f *(((float)std::rand() / (float)RAND_MAX) - 0.5f);
+				vY = abs(600.f *(((float)std::rand() / (float)RAND_MAX) - 1.5f));
+			}
 
 		size = 7;
 		color[0] = 1;
@@ -153,7 +161,10 @@ void Object::Update(float elapsedTime)
 	float elapsedTimeInSecond = elapsedTime / 1000.f;
 	
 	if (ObjectType == OBJECT_BUILDING)
+	{
 		BulletTimer += elapsedTimeInSecond;
+		PlayerTimer += elapsedTimeInSecond;
+	}
 	else if (ObjectType == OBJECT_CHARACTER)
 		ArrowTimer += elapsedTimeInSecond;
 	
