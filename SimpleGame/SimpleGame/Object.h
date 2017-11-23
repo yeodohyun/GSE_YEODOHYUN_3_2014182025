@@ -15,7 +15,7 @@ public:
 	float vX, vY;
 	int size, color[4];
 
-	int Life;
+	float Life;
 	float Lifetimer;
 
 	int ObjectType;

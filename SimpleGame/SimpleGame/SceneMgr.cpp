@@ -19,8 +19,7 @@ SceneMgr::SceneMgr(int width, int height)
 	AddObject(m_Objects[MAX_OBJECTS_COUNT - 2]->posX, m_Objects[MAX_OBJECTS_COUNT - 2]->posY, OBJECT_BULLET, 0, 1);
 	m_Objects[MAX_OBJECTS_COUNT - 3] = new Object(180, 330, OBJECT_BUILDING, 0, 1);
 	AddObject(m_Objects[MAX_OBJECTS_COUNT - 3]->posX, m_Objects[MAX_OBJECTS_COUNT - 3]->posY, OBJECT_BULLET, 0, 1);
-
-
+	
 	m_Objects[MAX_OBJECTS_COUNT - 4] = new Object(0, -300, OBJECT_BUILDING, 0, 2);
 	AddObject(m_Objects[MAX_OBJECTS_COUNT - 4]->posX, m_Objects[MAX_OBJECTS_COUNT - 4]->posY, OBJECT_BULLET, 0, m_Objects[MAX_OBJECTS_COUNT - 4]->Team);
 	m_Objects[MAX_OBJECTS_COUNT - 5] = new Object(-180, -330, OBJECT_BUILDING, 0, 2);
@@ -44,7 +43,7 @@ void SceneMgr::DrawAllObjects()
 	
 	// Áß¾Ó¼±
 	for (int i = 0; i < 350; i++)
-		m_renderer->DrawSolidRect(i*2 - 350, 0, 0, 1, 0, 0, 0, 1);
+		m_renderer->DrawSolidRect(i*2 - 350, 0, 0, 1, 0, 0, 0, 1,0.4);
 	
 	for (int i = 0; i < MAX_OBJECTS_COUNT; i++)
 	{
@@ -55,19 +54,51 @@ void SceneMgr::DrawAllObjects()
 
 
 				if (m_Objects[i]->Team == 1)
+				{
 					m_renderer->DrawTexturedRect(
 						m_Objects[i]->posX, m_Objects[i]->posY, 0, m_Objects[i]->size,
-						m_Objects[i]->color[0], m_Objects[i]->color[1], m_Objects[i]->color[2], m_Objects[i]->color[3], texture1);
+						m_Objects[i]->color[0], m_Objects[i]->color[1], m_Objects[i]->color[2], m_Objects[i]->color[3], texture1, 0.1);
+
+					m_renderer->DrawSolidRectGauge(m_Objects[i]->posX,
+						m_Objects[i]->posY + m_Objects[i]->size / 1.5, 0, m_Objects[i]->size, 5, 1, 0, 0, 1, m_Objects[i]->Life / 500, 0.1);
+				}
 				if (m_Objects[i]->Team == 2)
+				{
 					m_renderer->DrawTexturedRect(
 						m_Objects[i]->posX, m_Objects[i]->posY, 0, m_Objects[i]->size,
-						m_Objects[i]->color[0], m_Objects[i]->color[1], m_Objects[i]->color[2], m_Objects[i]->color[3], texture2);
+						m_Objects[i]->color[0], m_Objects[i]->color[1], m_Objects[i]->color[2], m_Objects[i]->color[3], texture2, 0.1);
+
+					m_renderer->DrawSolidRectGauge(m_Objects[i]->posX,
+						m_Objects[i]->posY + m_Objects[i]->size / 1.5, 0, m_Objects[i]->size, 5, 0, 0, 1, 1, m_Objects[i]->Life / 500, 0.1);
+					std::cout << m_Objects[i]->Life / 500 << std::endl;
+				}
 			}
 			else
 			{
-				m_renderer->DrawSolidRect(
-					m_Objects[i]->posX, m_Objects[i]->posY, 0, m_Objects[i]->size,
-					m_Objects[i]->color[0], m_Objects[i]->color[1], m_Objects[i]->color[2], m_Objects[i]->color[3]);
+				if (m_Objects[i]->ObjectType == OBJECT_CHARACTER)
+				{
+					m_renderer->DrawSolidRect(
+						m_Objects[i]->posX, m_Objects[i]->posY, 0, m_Objects[i]->size,
+						m_Objects[i]->color[0], m_Objects[i]->color[1], m_Objects[i]->color[2], m_Objects[i]->color[3], 0.2);
+
+					if (m_Objects[i]->Team == 1)
+					{
+						m_renderer->DrawSolidRectGauge(m_Objects[i]->posX, 
+							m_Objects[i]->posY + m_Objects[i]->size/1.5, 0, m_Objects[i]->Life / 5, 5, 1, 0, 0, 1, 1, 0.1);
+					}
+					else if (m_Objects[i]->Team == 2)
+					{
+						m_renderer->DrawSolidRectGauge(m_Objects[i]->posX, 
+							m_Objects[i]->posY + m_Objects[i]->size/1.5, 0, m_Objects[i]->Life / 5, 5, 0, 0, 1, 1, 1, 0.1);
+					}
+				}
+				if (m_Objects[i]->ObjectType != OBJECT_CHARACTER)
+				{
+					m_renderer->DrawSolidRect(
+						m_Objects[i]->posX, m_Objects[i]->posY, 0, m_Objects[i]->size,
+						m_Objects[i]->color[0], m_Objects[i]->color[1], m_Objects[i]->color[2], m_Objects[i]->color[3], 0.3);
+				}
+
 			}
 		}
 	}
@@ -94,7 +125,6 @@ void SceneMgr::UpateSceneMgr(float elapsedTime)
 			}
 			if (m_Objects[i]->ObjectType == OBJECT_CHARACTER && m_Objects[i]->ArrowTimer > 3.0f)
 			{
-				std::cout << m_Objects[i]->ArrowTimer << std::endl;
 				AddObject(m_Objects[i]->posX, m_Objects[i]->posY, OBJECT_ARROW, i, m_Objects[i]->Team);
 				m_Objects[i]->ArrowTimer = 0;
 			}
@@ -148,74 +178,6 @@ void SceneMgr::ColisionTest()
 	{
 		if (m_Objects[i] != NULL)
 		{
-			if (m_Objects[i]->ObjectType == OBJECT_CHARACTER)
-			{
-				if (m_Objects[i]->Team == 1)
-				{
-					m_Objects[i]->color[0] = 1;
-					m_Objects[i]->color[1] = 0;
-					m_Objects[i]->color[2] = 0;
-					m_Objects[i]->color[3] = 1;
-				}
-				else if (m_Objects[i]->Team == 2)
-				{
-					m_Objects[i]->color[0] = 0;
-					m_Objects[i]->color[1] = 1;
-					m_Objects[i]->color[2] = 0;
-					m_Objects[i]->color[3] = 1;
-				}
-			}
-			else if (m_Objects[i]->ObjectType == OBJECT_BUILDING)
-			{
-				if (m_Objects[i]->Team == 1)
-				{
-					m_Objects[i]->color[0] = 1;
-					m_Objects[i]->color[1] = 0;
-					m_Objects[i]->color[2] = 0;
-					m_Objects[i]->color[3] = 1;
-				}
-				else if (m_Objects[i]->Team == 2)
-				{
-					m_Objects[i]->color[0] = 0;
-					m_Objects[i]->color[1] = 0;
-					m_Objects[i]->color[2] = 0;
-					m_Objects[i]->color[3] = 1;
-				}
-			}
-			else if (m_Objects[i]->ObjectType == OBJECT_BULLET)
-			{
-				if (m_Objects[i]->Team == 1)
-				{
-					m_Objects[i]->color[0] = 1;
-					m_Objects[i]->color[1] = 0;
-					m_Objects[i]->color[2] = 0;
-					m_Objects[i]->color[3] = 1;
-				}
-				else if (m_Objects[i]->Team == 2)
-				{
-					m_Objects[i]->color[0] = 0;
-					m_Objects[i]->color[1] = 0;
-					m_Objects[i]->color[2] = 1;
-					m_Objects[i]->color[3] = 1;
-				}
-			}
-			else if (m_Objects[i]->ObjectType == OBJECT_ARROW)
-			{
-				if (m_Objects[i]->Team == 1)
-				{
-					m_Objects[i]->color[0] = 0.5;
-					m_Objects[i]->color[1] = 0.2;
-					m_Objects[i]->color[2] = 0.7;
-					m_Objects[i]->color[3] = 1;
-				}
-				else if (m_Objects[i]->Team == 2)
-				{
-					m_Objects[i]->color[0] = 1;
-					m_Objects[i]->color[1] = 1;
-					m_Objects[i]->color[2] = 0;
-					m_Objects[i]->color[3] = 1;
-				}
-			}
 
 		}
 		for (int j = 0; j < MAX_OBJECTS_COUNT; j++)
@@ -246,20 +208,12 @@ void SceneMgr::ColisionTest()
 						if ((m_Objects[i]->ObjectType == OBJECT_BUILDING &&m_Objects[j]->ObjectType == OBJECT_BULLET))
 						{
 							m_Objects[i]->Life -= m_Objects[j]->Life;
-							m_Objects[i]->color[0] = 1;
-							m_Objects[i]->color[1] = 0;
-							m_Objects[i]->color[2] = 0;
-							m_Objects[i]->color[3] = 1;
 							m_Objects[j] = NULL;
 							delete m_Objects[j];
 						}
 						else if ((m_Objects[i]->ObjectType == OBJECT_BUILDING &&m_Objects[j]->ObjectType == OBJECT_CHARACTER))
 						{
 							m_Objects[i]->Life -= m_Objects[j]->Life;
-							m_Objects[i]->color[0] = 1;
-							m_Objects[i]->color[1] = 0;
-							m_Objects[i]->color[2] = 0;
-							m_Objects[i]->color[3] = 1;
 							m_Objects[j] = NULL;
 							delete m_Objects[j];
 						}
@@ -267,10 +221,6 @@ void SceneMgr::ColisionTest()
 						{
 							m_Objects[i]->Life -= m_Objects[j]->Life;
 							std::cout << m_Objects[i]->Life << std::endl;
-							m_Objects[i]->color[0] = 1;
-							m_Objects[i]->color[1] = 0;
-							m_Objects[i]->color[2] = 0;
-							m_Objects[i]->color[3] = 1;
 							m_Objects[j] = NULL;
 							delete m_Objects[j];
 						}
@@ -278,10 +228,6 @@ void SceneMgr::ColisionTest()
 						{
 							m_Objects[i]->Life -= m_Objects[j]->Life;
 							std::cout << m_Objects[i]->Life << std::endl;
-							m_Objects[i]->color[0] = 1;
-							m_Objects[i]->color[1] = 0;
-							m_Objects[i]->color[2] = 0;
-							m_Objects[i]->color[3] = 1;
 							m_Objects[j] = NULL;
 							delete m_Objects[j];
 						}

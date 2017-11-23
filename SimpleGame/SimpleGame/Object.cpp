@@ -7,67 +7,6 @@ Object::Object()
 {
 }
 
-Object::Object(float x, float y, int Type)
-{
-	posX = x;
-	posY = y;
-	ObjectType = Type;
-
-
-	if (ObjectType == OBJECT_CHARACTER)
-	{
-		vX = 200.f *(((float)std::rand() / (float)RAND_MAX) - 1.5f);
-		vY = 200.f *(((float)std::rand() / (float)RAND_MAX) - 1.5f);
-
-		size = 15;
-		color[0] = 1;
-		color[1] = 1;
-		color[2] = 1;
-		color[3] = 1;
-
-		ShooterIndex = -1;
-		ArrowTimer = 0;
-		Life = 10;
-		Lifetimer = 1000.0f;
-	}
-	else if (ObjectType == OBJECT_BUILDING)
-	{
-
-		size = 80;
-		color[0] = 1;
-		color[1] = 1;
-		color[2] = 0;
-		color[3] = 1;
-
-		Life = 500;
-		Lifetimer = 500.0f;
-
-		BulletTimer = 0.0f;
-	}
-	else if (ObjectType == OBJECT_BULLET)
-	{
-		vX = 600.f *(((float)std::rand() / (float)RAND_MAX) - 1.5f);
-		vY = abs(600.f *(((float)std::rand() / (float)RAND_MAX) - 1.5f)) ;
-		
-		if (std::rand() % 2 == 1)
-			vX = -vX;
-		if (vY < 0)
-			vY = -vY;
-
-		size = 7;
-		color[0] = 1;
-		color[1] = 0;
-		color[2] = 0;
-		color[3] = 1;
-
-		Life = 20;
-		Lifetimer = 500.0f;
-
-		BulletTimer = 0.0f;
-	}
-}
-
-//Arrow ¸¸µé±â
 Object::Object(float x, float y, int Type, int index, int team)
 {
 	posX = x;
@@ -77,10 +16,11 @@ Object::Object(float x, float y, int Type, int index, int team)
 
 	if (ObjectType == OBJECT_CHARACTER)
 	{
-		vX = 300.f *(((float)std::rand() / (float)RAND_MAX) - 1.5f);
-		vY = 300.f *(((float)std::rand() / (float)RAND_MAX) - 1.5f);
+		vX = 100.f *(((float)std::rand() / (float)RAND_MAX) - 1.5f);
+		vY = 100.f *(((float)std::rand() / (float)RAND_MAX) - 1.5f);
 
-		size = 15;
+		size = 30;
+
 		if (Team == 1)
 		{
 			color[0] = 1;
@@ -88,9 +28,17 @@ Object::Object(float x, float y, int Type, int index, int team)
 			color[2] = 0;
 			color[3] = 1;
 		}
+		else if (Team == 2)
+		{
+			color[0] = 0;
+			color[1] = 0;
+			color[2] = 1;
+			color[3] = 1;
+		}
+
 		ShooterIndex = -1;
 		ArrowTimer = 0;
-		Life = 10;
+		Life = 100;
 		Lifetimer = 1000.0f;
 	}
 	else if (ObjectType == OBJECT_BUILDING)
@@ -99,7 +47,7 @@ Object::Object(float x, float y, int Type, int index, int team)
 		size = 80;
 		color[0] = 1;
 		color[1] = 1;
-		color[2] = 0;
+		color[2] = 1;
 		color[3] = 1;
 
 		Life = 500;
@@ -114,18 +62,24 @@ Object::Object(float x, float y, int Type, int index, int team)
 		{
 			vX = 600.f *(((float)std::rand() / (float)RAND_MAX) - 0.5f);
 			vY = abs(600.f *(((float)std::rand() / (float)RAND_MAX) - 1.5f)) * -1;
+
+			color[0] = 1;
+			color[1] = 0;
+			color[2] = 0;
+			color[3] = 1;
 		}
 		if (Team == 2)
 			{
 				vX = 600.f *(((float)std::rand() / (float)RAND_MAX) - 0.5f);
 				vY = abs(600.f *(((float)std::rand() / (float)RAND_MAX) - 1.5f));
-			}
 
-		size = 7;
-		color[0] = 1;
-		color[1] = 0;
-		color[2] = 0;
-		color[3] = 1;
+				color[0] = 0;
+				color[1] = 0;
+				color[2] = 1;
+				color[3] = 1;
+		}
+
+		size = 4;
 
 		Life = 20;
 		Lifetimer = 500.0f;
@@ -134,18 +88,29 @@ Object::Object(float x, float y, int Type, int index, int team)
 	}
 	else if (ObjectType == OBJECT_ARROW)
 	{
-		vX = 200.f *(((float)std::rand() / (float)RAND_MAX) - 1.5f);
-		vY = 200.f *(((float)std::rand() / (float)RAND_MAX) - 1.5f);
 
-		if (std::rand() % 2 == 1)
-			vX = -vX;
-		if (std::rand() % 2 == 1)
-			vY = -vY;
-		size = 5;
-		color[0] = 0;
-		color[1] = 1;
-		color[2] = 0;
-		color[3] = 1;
+		size = 4;
+
+		if (Team == 1)
+		{
+			vX = 200.f *(((float)std::rand() / (float)RAND_MAX) - 0.5f);
+			vY = abs(200.f *(((float)std::rand() / (float)RAND_MAX) - 1.5f)) * -1;
+
+			color[0] = 0.5;
+			color[1] = 0.2;
+			color[2] = 0.7;
+			color[3] = 1;
+		}
+		else if (Team == 2)
+		{
+			vX = 200.f *(((float)std::rand() / (float)RAND_MAX) - 0.5f);
+			vY = abs(200.f *(((float)std::rand() / (float)RAND_MAX) - 1.5f)) ;
+			color[0] = 1;
+			color[1] = 1;
+			color[2] = 0;
+			color[3] = 1;
+		}
+
 
 		Lifetimer = 500.0f;
 		ShooterIndex = index;
@@ -182,7 +147,6 @@ void Object::Update(float elapsedTime)
 			if (ObjectType == OBJECT_BULLET || ObjectType == OBJECT_ARROW)
 			{
 				Life = 0.f;
-				std::cout << "delete" << std::endl;
 			}
 
 			vX = -vX;
