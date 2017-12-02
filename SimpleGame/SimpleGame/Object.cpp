@@ -60,7 +60,7 @@ Object::Object(float x, float y, int Type, int team)
 	{
 		if (Team == 1)
 		{
-			vX = 600.f *(((float)std::rand() / (float)RAND_MAX) - 0.5f);
+			vX = 1;
 			vY = abs(600.f *(((float)std::rand() / (float)RAND_MAX) - 1.5f)) * -1;
 
 			color[0] = 1;
@@ -69,14 +69,14 @@ Object::Object(float x, float y, int Type, int team)
 			color[3] = 1;
 		}
 		if (Team == 2)
-			{
-				vX = 600.f *(((float)std::rand() / (float)RAND_MAX) - 0.5f);
-				vY = abs(600.f *(((float)std::rand() / (float)RAND_MAX) - 1.5f));
+		{
+			vX = 1;
+			vY = abs(600.f *(((float)std::rand() / (float)RAND_MAX) - 1.5f));
 
-				color[0] = 0;
-				color[1] = 0;
-				color[2] = 1;
-				color[3] = 1;
+			color[0] = 0;
+			color[1] = 0;
+			color[2] = 1;
+			color[3] = 1;
 		}
 
 		size = 4;
