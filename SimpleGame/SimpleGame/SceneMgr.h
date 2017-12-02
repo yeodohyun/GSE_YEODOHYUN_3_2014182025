@@ -18,13 +18,10 @@ public:
 	SceneMgr(int width, int height);
 	~SceneMgr();
 
-	int CharacterMove = 0;
-
 	void DrawAllObjects();
 	void UpateSceneMgr(float elapsedTime);
 
 	void AddObject(float x, float y, int type,  int team);
 	void ColisionTest();
-
 };
 

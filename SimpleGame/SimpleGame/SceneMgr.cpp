@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "SceneMgr.h"
 
+
 SceneMgr::SceneMgr(int width, int height)
 {
 	m_renderer = new Renderer(width, height);
@@ -36,24 +37,14 @@ SceneMgr::~SceneMgr()
 
 void SceneMgr::DrawAllObjects()
 {
-	GLuint backgronund;
-	GLuint B_texture1, B_texture2;	//빌딩 택스쳐
-	GLuint Char_texture1, Char_texture2; //캐릭터 택스쳐
-	GLuint Particle; //파티클
-	backgronund = m_renderer->CreatePngTexture("./Textures/background.png");
-
-	B_texture1 = m_renderer->CreatePngTexture("./Textures/ClashRoyale.png");
-	B_texture2 = m_renderer->CreatePngTexture("./Textures/ClashRoyale2.png");
-	Char_texture1 = m_renderer->CreatePngTexture("./Textures/character1.png");
-	Char_texture2 = m_renderer->CreatePngTexture("./Textures/character2.png");
-	Particle = m_renderer->CreatePngTexture("./Textures/Particle.png");
-	m_renderer->DrawTexturedRect(
-		0, 0, 0, 800,
-		1, 1, 1, 1, backgronund, 0.6);
+	GLuint texture1, texture2;
+	texture1 = m_renderer->CreatePngTexture("./Textures/ClashRoyale.png");
+	texture2 = m_renderer->CreatePngTexture("./Textures/ClashRoyale2.png");
+	
 	// 중앙선
 	for (int i = 0; i < 350; i++)
-		m_renderer->DrawSolidRect(i * 2 - 350, 0, 0, 1, 0, 0, 0, 1, 0.4);
-
+		m_renderer->DrawSolidRect(i*2 - 350, 0, 0, 1, 0, 0, 0, 1,0.4);
+	
 	for (int i = 0; i < MAX_OBJECTS_COUNT; i++)
 	{
 		if (m_Objects[i] != NULL)
@@ -66,7 +57,7 @@ void SceneMgr::DrawAllObjects()
 				{
 					m_renderer->DrawTexturedRect(
 						m_Objects[i]->posX, m_Objects[i]->posY, 0, m_Objects[i]->size,
-						m_Objects[i]->color[0], m_Objects[i]->color[1], m_Objects[i]->color[2], m_Objects[i]->color[3], B_texture1, 0.1);
+						m_Objects[i]->color[0], m_Objects[i]->color[1], m_Objects[i]->color[2], m_Objects[i]->color[3], texture1, 0.1);
 
 					m_renderer->DrawSolidRectGauge(m_Objects[i]->posX,
 						m_Objects[i]->posY + m_Objects[i]->size / 1.5, 0, m_Objects[i]->size, 5, 1, 0, 0, 1, m_Objects[i]->Life / 500, 0.1);
@@ -75,72 +66,49 @@ void SceneMgr::DrawAllObjects()
 				{
 					m_renderer->DrawTexturedRect(
 						m_Objects[i]->posX, m_Objects[i]->posY, 0, m_Objects[i]->size,
-						m_Objects[i]->color[0], m_Objects[i]->color[1], m_Objects[i]->color[2], m_Objects[i]->color[3], B_texture2, 0.1);
+						m_Objects[i]->color[0], m_Objects[i]->color[1], m_Objects[i]->color[2], m_Objects[i]->color[3], texture2, 0.1);
 
 					m_renderer->DrawSolidRectGauge(m_Objects[i]->posX,
 						m_Objects[i]->posY + m_Objects[i]->size / 1.5, 0, m_Objects[i]->size, 5, 0, 0, 1, 1, m_Objects[i]->Life / 500, 0.1);
 					std::cout << m_Objects[i]->Life / 500 << std::endl;
 				}
 			}
-
-			if (m_Objects[i]->ObjectType == OBJECT_CHARACTER)
+			else
 			{
-
-				if (m_Objects[i]->Team == 1)
+				if (m_Objects[i]->ObjectType == OBJECT_CHARACTER)
 				{
-
-					m_renderer->DrawTexturedRectSeq(
-						m_Objects[i]->posX, m_Objects[i]->posY, 0, m_Objects[i]->size, m_Objects[i]->color[0], m_Objects[i]->color[1], m_Objects[i]->color[2], m_Objects[i]->color[3],
-						Char_texture1, CharacterMove / 7, 0, 7, 1, 0.2);
-
-					m_renderer->DrawSolidRectGauge(m_Objects[i]->posX,
-						m_Objects[i]->posY + m_Objects[i]->size / 1.5, 0, m_Objects[i]->size, 5, 1, 0, 0, 1, m_Objects[i]->Life / 100, 0.1);
-				}
-				else if (m_Objects[i]->Team == 2)
-				{
-					m_renderer->DrawTexturedRectSeq(
-						m_Objects[i]->posX, m_Objects[i]->posY, 0, m_Objects[i]->size, m_Objects[i]->color[0], m_Objects[i]->color[1], m_Objects[i]->color[2], m_Objects[i]->color[3],
-						Char_texture2, CharacterMove / 7, 0, 7, 1, 0.2);
-
-					m_renderer->DrawSolidRectGauge(m_Objects[i]->posX,
-						m_Objects[i]->posY + m_Objects[i]->size / 1.5, 0, m_Objects[i]->size, 5, 0, 0, 1, 1, m_Objects[i]->Life / 100, 0.1);
-				}
-			}
-
-			if (m_Objects[i]->ObjectType == OBJECT_BULLET)
-			{
-				if (m_Objects[i]->Team == 1)
-				{
-					m_renderer->DrawParticle(
+					m_renderer->DrawSolidRect(
 						m_Objects[i]->posX, m_Objects[i]->posY, 0, m_Objects[i]->size,
-						m_Objects[i]->color[0], m_Objects[i]->color[1], m_Objects[i]->color[2], m_Objects[i]->color[3],
-						0, 1, Particle, CharacterMove*2);
+						m_Objects[i]->color[0], m_Objects[i]->color[1], m_Objects[i]->color[2], m_Objects[i]->color[3], 0.2);
+
+					if (m_Objects[i]->Team == 1)
+					{
+						m_renderer->DrawSolidRectGauge(m_Objects[i]->posX, 
+							m_Objects[i]->posY + m_Objects[i]->size/1.5, 0, m_Objects[i]->size, 5, 1, 0, 0, 1, m_Objects[i]->Life / 100, 0.1);
+					}
+					else if (m_Objects[i]->Team == 2)
+					{
+						m_renderer->DrawSolidRectGauge(m_Objects[i]->posX, 
+							m_Objects[i]->posY + m_Objects[i]->size/1.5, 0, m_Objects[i]->size, 5, 0, 0, 1, 1, m_Objects[i]->Life / 100, 0.1);
+					}
 				}
-				else if (m_Objects[i]->Team == 2)
+				if (m_Objects[i]->ObjectType != OBJECT_CHARACTER)
 				{
-					m_renderer->DrawParticle(
+					m_renderer->DrawSolidRect(
 						m_Objects[i]->posX, m_Objects[i]->posY, 0, m_Objects[i]->size,
-						m_Objects[i]->color[0], m_Objects[i]->color[1], m_Objects[i]->color[2], m_Objects[i]->color[3],
-						0, -1, Particle, CharacterMove*2);
+						m_Objects[i]->color[0], m_Objects[i]->color[1], m_Objects[i]->color[2], m_Objects[i]->color[3], 0.3);
 				}
-			}
 
-			if (m_Objects[i]->ObjectType == OBJECT_ARROW)
-			{
-				m_renderer->DrawSolidRect(
-					m_Objects[i]->posX, m_Objects[i]->posY, 0, m_Objects[i]->size,
-					m_Objects[i]->color[0], m_Objects[i]->color[1], m_Objects[i]->color[2], m_Objects[i]->color[3], 0.3);
 			}
-
 		}
 	}
 }
 
 void SceneMgr::UpateSceneMgr(float elapsedTime)
 {
-	CharacterMove++;
+
 	
-	if (m_Objects[MAX_OBJECTS_COUNT - 1] != NULL && m_Objects[MAX_OBJECTS_COUNT - 1]->ObjectType == OBJECT_BUILDING && m_Objects[MAX_OBJECTS_COUNT - 1]->PlayerTimer > 3.0f)
+	if (m_Objects[MAX_OBJECTS_COUNT - 1]->ObjectType == OBJECT_BUILDING && m_Objects[MAX_OBJECTS_COUNT - 1]->PlayerTimer > 3.0f)
 	{
 		AddObject(rand() % 400 - 200, rand() % 400, OBJECT_CHARACTER, m_Objects[MAX_OBJECTS_COUNT - 1]->Team);
 		m_Objects[MAX_OBJECTS_COUNT - 1]->PlayerTimer = 0.0f;
